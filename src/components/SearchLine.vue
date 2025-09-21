@@ -5,10 +5,14 @@
       <a :href="`https://vj-wiki.top/${entry}`" target="_blank">
         <el-button>条目</el-button>
       </a>
+      <a :href="`https://vocadb.net/Search?filter=${name}&searchType=Artist&sort=SongRating`" target="_blank">
+        <el-button>搜索</el-button>
+      </a>
     </div>
-    <div class="w-3/4 flex flex-row gap-4">
+    <div class="w-3/4 flex flex-row gap-4 items-start">
       <ProducerCard v-for="producer in results" :data="producer" :selected="producer.id === id"
         @update-id="handleUpdateId" />
+      <el-input class="w-20!" v-model="id" placeholder="id" />
     </div>
   </div>
 
@@ -38,7 +42,8 @@ async function search(name: string) {
       query: name,
       fields: 'MainPicture',
       preferAccurateMatches: true,
-      maxResults: 3
+      maxResults: 3,
+      sort: 'SongRating'
     }
   })
   results.value = response.data.items;
