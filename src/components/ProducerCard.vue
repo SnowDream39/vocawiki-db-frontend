@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row" ref="card">
+  <div class="flex flex-row" :class="{ active: selected }" ref="card">
     <img :src="data.mainPicture.urlTinyThumb" alt="portrait" />
     <div>
       <div>{{ data.defaultName }}</div>
@@ -16,23 +16,18 @@
 
 <script setup lang="ts">
 import { ElButton } from 'element-plus';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 const props = defineProps<{
-  data: any
+  data: any,
+  selected: boolean
 }>()
-const id = defineModel<number>();
-
+const emit = defineEmits(['updateId'])
 const card = ref()
 
 function select() {
-  id.value = props.data.id
+  emit('updateId', props.data.id)
 }
 
-watch(id, () => {
-  if (id.value === props.data.id) {
-    card.value.classList.toggle('active')
-  }
-})
 </script>
 
 <style scoped>

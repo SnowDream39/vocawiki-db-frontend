@@ -2,7 +2,7 @@
   <footer>
     <div>
       <span>Vocawiki </span>
-      <a href="https://qm.qq.com/q/x4FWrbSXw">QQ群：974585468</a>
+      <a href="https://qm.qq.com/q/1CEpIW3QfG">QQ群：893764914</a>
     </div>
     <div>
       <span>©2025 Vocawiki</span>

@@ -1,13 +1,14 @@
 <template>
-  <div class="flex flex-row flex-nowrap">
+  <div class="flex flex-row flex-nowrap m-3">
     <div class="w-1/4">
       <el-input v-model="name" />
       <a :href="`https://vj-wiki.top/${entry}`" target="_blank">
         <el-button>条目</el-button>
       </a>
     </div>
-    <div class="w-3/4 m-3 flex flex-row gap-4">
-      <ProducerCard v-for="producer in results" :data="producer" v-model="id" />
+    <div class="w-3/4 flex flex-row gap-4">
+      <ProducerCard v-for="producer in results" :data="producer" :selected="producer.id === id"
+        @update-id="handleUpdateId" />
     </div>
   </div>
 
@@ -27,6 +28,10 @@ const name = ref<string>('')
 const results = ref<any[]>()
 const id = defineModel<number>()
 
+function handleUpdateId(newId: number) {
+  id.value = newId
+}
+
 async function search(name: string) {
   const response = await axios.get('https://vocadb.net/api/artists', {
     params: {
@@ -36,7 +41,10 @@ async function search(name: string) {
       maxResults: 3
     }
   })
-  results.value = response.data.items
+  results.value = response.data.items;
+  if (results.value!.length === 1) {
+    id.value = results.value![0].id;
+  }
 }
 
 async function init() {
