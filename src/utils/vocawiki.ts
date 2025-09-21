@@ -7,6 +7,24 @@ const api = axios.create({
   },
 })
 
+export async function getProducerEntry(id: number): Promise<string> {
+  const response = await api.get('/entry/producer', {
+    params: {
+      ids: [id],
+    },
+  })
+  return response.data[0].id
+}
+
+export async function getProducerId(entry: string): Promise<number> {
+  const response = await api.get('/entry/producer/id', {
+    params: {
+      entry,
+    },
+  })
+  return response.data
+}
+
 export async function upsertProducers(data: any) {
   const response = await api.post('/entry/producer/upsert', data)
   return response.data
