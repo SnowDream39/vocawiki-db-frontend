@@ -24,6 +24,7 @@ import axios from 'axios';
 import { onMounted, ref, watch } from 'vue';
 import ProducerCard from './ProducerCard.vue';
 import { ElInput, ElButton } from 'element-plus';
+import { searchArtist } from '@/utils/vocadb';
 const props = defineProps<{
   entry: string
 }>()
@@ -37,16 +38,8 @@ function handleUpdateId(newId: number) {
 }
 
 async function search(name: string) {
-  const response = await axios.get('https://vocadb.net/api/artists', {
-    params: {
-      query: name,
-      fields: 'MainPicture',
-      preferAccurateMatches: true,
-      maxResults: 3,
-      sort: 'SongRating'
-    }
-  })
-  results.value = response.data.items;
+  const data = await searchArtist(name)
+  results.value = data.items;
   if (results.value!.length === 1) {
     id.value = results.value![0].id;
   }

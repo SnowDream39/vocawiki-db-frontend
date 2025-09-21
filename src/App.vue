@@ -1,7 +1,7 @@
 <template>
   <el-config-provider :locale="zhCn">
     <Header />
-    <main>
+    <main class="flex flex-col items-center">
       <router-view />
     </main>
   </el-config-provider>

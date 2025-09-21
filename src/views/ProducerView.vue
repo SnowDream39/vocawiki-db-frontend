@@ -11,8 +11,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
 import { ElInput, ElButton, ElMessage } from 'element-plus';
-import SearchLine from '@/components/SearchLine.vue';
+import SearchLine from '@/components/ProducerSearchLine.vue';
 import axios from 'axios';
+import { upsertProducers } from '@/utils/vocawiki';
 
 const input = ref<string>('')
 const ids = ref<number[]>([])
@@ -29,7 +30,7 @@ async function submit() {
     id: ids.value[index],
     entry: value
   }))
-  const response = await axios.post('https://api.voca.wiki/entry/producer/upsert', combined)
+  const response = await upsertProducers(combined)
   ElMessage({
     message: '已成功更新',
     type: 'success'
