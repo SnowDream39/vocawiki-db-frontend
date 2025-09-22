@@ -12,6 +12,6 @@
 import { ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import { RouterView } from 'vue-router';
-import Header from './components/Header.vue';
+import Header from './components/header/Header.vue';
 import Footer from './components/Footer.vue';
 </script>

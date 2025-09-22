@@ -8,10 +8,13 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     Footer: typeof import('./src/components/Footer.vue')['default']
-    Header: typeof import('./src/components/Header.vue')['default']
+    Header: typeof import('./src/components/header/Header.vue')['default']
+    HeaderDrawer: typeof import('./src/components/header/HeaderDrawer.vue')['default']
+    HeaderMenu: typeof import('./src/components/header/HeaderMenu.vue')['default']
     ProducerCard: typeof import('./src/components/ProducerCard.vue')['default']
     ProducerSearchLine: typeof import('./src/components/ProducerSearchLine.vue')['default']
     ProducerSongSelect: typeof import('./src/components/ProducerSongSelect.vue')['default']

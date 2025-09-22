@@ -1,5 +1,6 @@
 <template>
-  <div class="w-[500px] overflow-hidden flex flex-row flex-nowrap p-2 border-1 border-black dark:border-white">
+  <div
+    class=" w-[90%] sm:w-[500px] overflow-hidden flex flex-row flex-nowrap p-2 border-1 border-black dark:border-white">
 
     <div name="left" class="w-28 h-21">
       <a :href="`https://vocadb.net/S/${song.id}`" target="_blank">
@@ -14,7 +15,9 @@
       </div>
       <div>{{ song.artistString }}</div>
       <div class="flex flex-row flex-nowrap items-center space-x-2">
-        <img v-for="pv of song.pvs" :src="icons[pv.service as keyof typeof icons]" class="h-6"></img>
+        <a v-for="pv of song.pvs" :href="pv.url" target="_blank">
+          <img :src="icons[pv.service as keyof typeof icons]" class="h-6"></img>
+        </a>
       </div>
     </div>
     <div name="right" class="flex justify-center items-center">

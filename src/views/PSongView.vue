@@ -9,20 +9,20 @@
     <PSongSearchLine v-for="(song, index) of songs" :producerId="producerId" :song="song" :key="song.id" />
   </div>
   <div class="flex flex-row justify-center">
-    <el-pagination layout="prev, pager, next, total" v-model:current-page="page" :page-size="size" :total="total"
-      @change="search" />
+    <el-pagination layout="sizes, prev, pager, next, total" v-model:current-page="page" v-model:page-size="size"
+      :total="total" @change="search" :page-sizes="[10, 20, 50, 100]" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ElInput, ElText, ElPagination } from 'element-plus';
-import { computed, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { searchSongsByArtist } from '@/utils/vocadb';
 import PSongSearchLine from '@/components/ProducerSongSelect.vue';
 import { getProducerId } from '@/utils/vocawiki';
 
 const songs = ref<any>()
-const page = ref<number>(1)
+const page = ref<number>()
 const size = ref<number>(10)
 const total = ref<number>(0)
 const entry = ref<string>('海茶')
@@ -34,6 +34,7 @@ async function search() {
   const data2 = await searchSongsByArtist(producerId.value, page.value, size.value);
   songs.value = data2.items
   total.value = data2.totalCount
+  console.log(data2)
 }
 
 onMounted(search)
