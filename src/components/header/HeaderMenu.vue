@@ -9,6 +9,9 @@
 
     <el-menu-item index="/producer">P主条目</el-menu-item>
     <el-menu-item index="/psong">P主歌曲</el-menu-item>
+    <el-menu-item index="/login">
+      <span class="i-material-symbols-account-circle-full"></span>
+    </el-menu-item>
   </el-menu>
 </template>
 

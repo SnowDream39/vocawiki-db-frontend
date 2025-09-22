@@ -24,12 +24,18 @@ importers:
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.21(typescript@5.8.3))
     devDependencies:
+      '@iconify-json/material-symbols':
+        specifier: ^1.2.37
+        version: 1.2.37
       '@tsconfig/node22':
         specifier: ^22.0.2
         version: 22.0.2
       '@types/node':
         specifier: ^22.16.5
         version: 22.18.6
+      '@unocss/preset-icons':
+        specifier: ^66.5.1
+        version: 66.5.1
       '@vitejs/plugin-vue':
         specifier: ^6.0.1
         version: 6.0.1(vite@7.1.6(@types/node@22.18.6)(jiti@2.5.1))(vue@3.5.21(typescript@5.8.3))
@@ -394,6 +400,9 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@iconify-json/material-symbols@1.2.37':
+    resolution: {integrity: sha512-T9R1IUJ3CBWGTo/qJLpXTPwy9JOCJucSONXxJKIdUpOzINhFfHBg8TvUUVcFNv8qw6L4upQyptnI6iJqbxxUWw==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -1943,6 +1952,10 @@ snapshots:
       '@floating-ui/utils': 0.2.10
 
   '@floating-ui/utils@0.2.10': {}
+
+  '@iconify-json/material-symbols@1.2.37':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/types@2.0.0': {}
 
