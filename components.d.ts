@@ -22,6 +22,7 @@ declare module 'vue' {
     HeaderDrawer: typeof import('./src/components/header/HeaderDrawer.vue')['default']
     HeaderMenu: typeof import('./src/components/header/HeaderMenu.vue')['default']
     LoginCard: typeof import('./src/components/user/LoginCard.vue')['default']
+    Manual: typeof import('./src/components/Manual.vue')['default']
     ProducerCard: typeof import('./src/components/ProducerCard.vue')['default']
     ProducerSearchLine: typeof import('./src/components/ProducerSearchLine.vue')['default']
     ProducerSongSelect: typeof import('./src/components/ProducerSongSelect.vue')['default']

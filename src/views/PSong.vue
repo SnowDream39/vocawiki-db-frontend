@@ -12,6 +12,12 @@
     <el-pagination layout="sizes, prev, pager, next, total" v-model:current-page="page" v-model:page-size="size"
       :total="total" @change="search" :page-sizes="[10, 20, 50, 100]" />
   </div>
+  <Manual>
+    <li>编辑数据库，需要点击右上角图标登录。</li>
+    <li>首先输入P主条目名。P主名的格式为，首字母大写，所有下划线转为空格。</li>
+    <li>如果P主已经在数据库中录入，就会自动搜索该P主在 VocaDB 的歌曲。</li>
+    <li>选择符合 Vocawiki 认定标准的歌曲作品。</li>
+  </Manual>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +26,7 @@ import { onMounted, ref, watch } from 'vue';
 import { searchSongsByArtist } from '@/utils/vocadb';
 import PSongSearchLine from '@/components/ProducerSongSelect.vue';
 import { getProducerId } from '@/utils/vocawiki';
+import Manual from '@/components/Manual.vue';
 
 const songs = ref<any>()
 const page = ref<number>()
