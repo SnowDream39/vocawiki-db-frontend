@@ -5,6 +5,12 @@
     <el-text>P主id</el-text>
     <el-text class="w-20!">{{ producerId }}</el-text>
   </div>
+  <div class="flex flex-row justify-center gap-2 my-4">
+    <el-text>歌曲类型</el-text>
+    <el-checkbox-group v-model="selectedSongTypes" @change="search">
+      <el-checkbox v-for="(songType, index) of songTypes" :key="index" :label="songType">{{ songType }}</el-checkbox>
+    </el-checkbox-group>
+  </div>
   <div class="flex flex-row flex-wrap justify-center max-w-[1200px]">
     <PSongSearchLine v-for="(song, index) of songs" :producerId="producerId" :song="song" :key="song.id" />
   </div>
@@ -27,6 +33,19 @@ import { searchSongsByArtist } from '@/utils/vocadb';
 import PSongSearchLine from '@/components/ProducerSongSelect.vue';
 import { getProducerId } from '@/utils/vocawiki';
 import Manual from '@/components/Manual.vue';
+import { ElCheckbox, ElCheckboxGroup } from 'element-plus';
+
+const songTypes = [
+  "Original",
+  "Remix",
+  "Remaster",
+  "Cover",
+  "Instrumental",
+  "Mashup",
+  "MusicPV",
+  "DramaPV",
+  "Other",
+];
 
 const songs = ref<any>()
 const page = ref<number>()
@@ -34,14 +53,16 @@ const size = ref<number>(10)
 const total = ref<number>(0)
 const entry = ref<string>('海茶')
 const producerId = ref<number>(110656)
+const selectedSongTypes = ref<string[]>(['Original', 'Remix', 'Remaster', 'Cover'])
 
 async function search() {
   const data1 = await getProducerId(entry.value)
   producerId.value = data1
-  const data2 = await searchSongsByArtist(producerId.value, page.value, size.value);
+  const data2 = await searchSongsByArtist(producerId.value, page.value, size.value, {
+    songTypes: selectedSongTypes.value
+  });
   songs.value = data2.items
   total.value = data2.totalCount
-  console.log(data2)
 }
 
 onMounted(search)

@@ -31,7 +31,7 @@ export const login = async (form: UserLogin) => {
         Accept: 'application/json',
       },
     })
-    return response.data
+    return response.data.access_token
   } else {
     const response = await api.post('/auth/jwt-cookie/login', data, {
       headers: {
@@ -40,7 +40,7 @@ export const login = async (form: UserLogin) => {
       },
       withCredentials: true, // ✅ 让浏览器带上/保存 Cookie
     })
-    return response.data
+    return response.data.access_token
   }
 }
 

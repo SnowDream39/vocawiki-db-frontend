@@ -19,7 +19,7 @@ if (import.meta.env.VITE_APP_ENV === 'development') {
 }
 
 export async function getProducerEntry(id: number): Promise<string> {
-  const response = await api.get('/entry/producer', {
+  const response = await api.get('/producer', {
     params: {
       ids: [id],
     },
@@ -28,7 +28,7 @@ export async function getProducerEntry(id: number): Promise<string> {
 }
 
 export async function getProducerId(entry: string): Promise<number> {
-  const response = await api.get('/entry/producer/id', {
+  const response = await api.get('/producer/id', {
     params: {
       entry,
     },
@@ -37,25 +37,52 @@ export async function getProducerId(entry: string): Promise<number> {
 }
 
 export async function upsertProducers(data: any) {
-  const response = await api.post('/entry/producer/upsert', data)
+  const response = await api.post('/producer/upsert', data)
   return response.data
 }
 
 export async function checkPSong(producer_id: number, song_id: number) {
-  const response = await api.get('/entry/producer/song/check', {
+  const response = await api.get('/producer/song/info', {
     params: { producer_id, song_id },
   })
   return response.data
 }
 
-export async function addPSong(data: { producer_id: number; song_id: number }) {
-  const response = await api.post('/entry/producer/song', data)
+export async function addPSong(data: {
+  producer_id: number
+  song_id: number
+  description: string
+}) {
+  const response = await api.post('/producer/song', data)
   return response.data
 }
 
 export async function deletePSong(data: { producer_id: number; song_id: number }) {
-  const response = await api.delete('/entry/producer/song', {
+  const response = await api.delete('/producer/song', {
     data,
   })
+  return response.data
+}
+
+export async function getSongEntry(id: number): Promise<string> {
+  const response = await api.get('/song', {
+    params: {
+      ids: [id],
+    },
+  })
+  return response.data[0].id
+}
+
+export async function getSongId(entry: string): Promise<number> {
+  const response = await api.get('/song/id', {
+    params: {
+      entry,
+    },
+  })
+  return response.data
+}
+
+export async function upsertSongs(data: any) {
+  const response = await api.post('/song/upsert', data)
   return response.data
 }

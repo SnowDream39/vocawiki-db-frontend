@@ -13,7 +13,7 @@ export async function searchArtist(name: string) {
   return response.data
 }
 
-export async function searchSongsByArtist(id: number, page = 1, size = 10) {
+export async function searchSongsByArtist(id: number, page = 1, size = 10, config: any = {}) {
   const response = await axios.get('https://vocadb.net/api/songs', {
     params: {
       'artistId[]': id,
@@ -23,11 +23,27 @@ export async function searchSongsByArtist(id: number, page = 1, size = 10) {
       maxResults: size,
       sort: 'PublishDate',
       getTotalCount: true,
+      onlyWithPvs: true,
+      songTypes: config.songTypes.join(','),
     },
   })
   return response.data
 }
 
+/**
+ *  选出一个最合适的缩略图
+ *  */
 export function selectThumbnailFromPvs(pvs: any[]): string | undefined {
-  return pvs.filter((pv: any) => ['Bilibili', 'NicoNicoDouga'].includes(pv.service))[0]?.thumbUrl
+  const servicesOrder = ['Bilibili', 'NicoNicoDouga', 'Youtube', 'SoundCloud']
+  const bestPv = pvs.sort(
+    (a, b) => servicesOrder.indexOf(a.service) - servicesOrder.indexOf(b.service),
+  )
+  return bestPv[0]?.thumbUrl
+}
+
+/**
+ * 筛选出有效的PV
+ */
+export function validatePv(pv: any) {
+  return pv.author.slice(-5) != 'Topic' && pv.pvType === 'Original'
 }
