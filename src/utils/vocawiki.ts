@@ -1,12 +1,22 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'https://api.voca.wiki',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
   withCredentials: true,
 })
+
+if (import.meta.env.VITE_APP_ENV === 'development') {
+  api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('access_token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  })
+}
 
 export async function getProducerEntry(id: number): Promise<string> {
   const response = await api.get('/entry/producer', {

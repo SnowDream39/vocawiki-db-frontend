@@ -9,9 +9,6 @@
         <el-input v-model="form.password" type="password" />
       </el-form-item>
       <el-form-item>
-        <el-checkbox v-model="form.remember">记住我</el-checkbox>
-      </el-form-item>
-      <el-form-item>
         <el-button type="primary" @click="onSubmit">登录</el-button>
         <el-button text @click="$emit('switch')">还没有账号？点此注册</el-button>
       </el-form-item>
@@ -22,13 +19,13 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { login } from '../../utils/user'
-import router from '@/router'
 import { ElCard } from 'element-plus'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const form = reactive({
   username: '',
   password: '',
-  remember: false,
 })
 
 const rules = {
@@ -49,6 +46,7 @@ const onSubmit = async () => {
         duration: 1000,
         showClose: false
       })
+      router.push('/')
 
     } else {
       ElMessage({
