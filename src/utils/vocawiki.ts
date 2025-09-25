@@ -51,7 +51,9 @@ export async function checkPSong(producer_id: number, song_id: number) {
 export async function addPSong(data: {
   producer_id: number
   song_id: number
+  entry: string
   description: string
+  image: string
 }) {
   const response = await api.post('/producer/song', data)
   return response.data

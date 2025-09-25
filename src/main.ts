@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 import 'virtual:uno.css'
 import 'element-plus/dist/index.css'
+import 'vue-waterfall-plugin-next/dist/style.css'
 import { ElMessage } from 'element-plus'
 const app = createApp(App)
 

@@ -1,6 +1,5 @@
 <template>
-  <div
-    class=" w-[90%] sm:w-[500px] overflow-hidden flex flex-col flex-nowrap p-2 border-1 border-black dark:border-white">
+  <div class="w-full overflow-hidden flex flex-col flex-nowrap p-2 border-1 border-black dark:border-white">
     <div class="w-full flex flex-row flex-nowrap items-center">
       <div name="left" class="w-28 h-21">
         <a :href="`https://vocadb.net/S/${song.id}`" target="_blank">
@@ -24,24 +23,32 @@
         <el-switch v-model="selected" :loading="loading" @change="change" />
       </div>
     </div>
-    <div class="w-full flex flex-col flex-nowrap">
-      <div class="w-full flex flex-row flex-nowrap">
-        <el-input v-model="entry" placeholder="条目" />
-        <el-button type="primary" @click="uploadEntry">上传</el-button>
-      </div>
-      <div class="w-full flex flex-row flex-nowrap">
-        <el-input v-model="description" placeholder="描述" />
-        <el-button type="primary" @click="upload">上传</el-button>
-      </div>
+    <div class="w-full flex flex-col flex-nowrap transition-[height] duration-200 ease-in-out"
+      :class="{ 'h-0': !selected, 'h-30': selected }">
+      <el-form v-if="selected">
+        <el-form-item label="条目">
+          <el-input v-model="entry" placeholder="Vocawiki条目名，下划线改为空格" />
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input v-model="description" placeholder="使用wikitext格式" />
+        </el-form-item>
+        <el-form-item label="图片">
+          <el-input v-model="image" placeholder="默认图片显示不出或者有更好图片时使用" />
+        </el-form-item>
+        <el-form-item>
+          <div class="w-full flex justify-end">
+            <el-button type="primary" @click="update">更新</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
-
 </template>
 
 <script setup lang="ts">
 import { selectThumbnailFromPvs, validatePv } from '@/utils/vocadb';
 import { addPSong, checkPSong, deletePSong, upsertSongs } from '@/utils/vocawiki';
-import { ElSwitch, ElInput, ElMessage } from 'element-plus';
+import { ElSwitch, ElInput, ElMessage, ElButton, ElForm, ElFormItem } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
 const icons = {
@@ -61,6 +68,7 @@ const selected = ref<boolean>(false)
 const loading = ref<boolean>(true)
 const entry = ref<string>("")
 const description = ref<string>("")
+const image = ref<string>("")
 const pvs = props.song.pvs.filter(validatePv)
 const pvUrl = selectThumbnailFromPvs(pvs)
 
@@ -80,7 +88,7 @@ async function check() {
 
 async function upload() {
   loading.value = true
-  await addPSong({ producer_id: props.producerId, song_id: props.song.id, description: description.value })
+  await addPSong({ producer_id: props.producerId, song_id: props.song.id, entry: entry.value, description: description.value, image: image.value })
   selected.value = true
   loading.value = false
 }
@@ -96,11 +104,17 @@ async function change(value: string | boolean | number) {
   }
 }
 
-async function uploadEntry() {
-  await upsertSongs([{ id: props.song.id, entry: entry.value }])
-  ElMessage.success("上传成功")
+async function update() {
+  await upsertSongs([{ id: props.song.id, entry: entry.value, image: image.value }])
+  ElMessage.success("更新成功")
 }
 
 onMounted(check)
 
 </script>
+
+<style scoped>
+.el-form-item {
+  margin-bottom: 0;
+}
+</style>

@@ -19,7 +19,8 @@
     "element-plus": "^2.11.3",
     "pinia": "^3.0.3",
     "vue": "^3.5.18",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-waterfall-plugin-next": "^2.6.9"
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.37",

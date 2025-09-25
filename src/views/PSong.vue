@@ -11,9 +11,11 @@
       <el-checkbox v-for="(songType, index) of songTypes" :key="index" :label="songType">{{ songType }}</el-checkbox>
     </el-checkbox-group>
   </div>
-  <div class="flex flex-row flex-wrap justify-center max-w-[1200px]">
-    <PSongSearchLine v-for="(song, index) of songs" :producerId="producerId" :song="song" :key="song.id" />
-  </div>
+  <Waterfall :list="songs" :breakpoints="breakpoints" ref="waterfall">
+    <template #default="{ item }">
+      <PSongSearchLine :producerId="producerId" :song="item" :key="item.id" />
+    </template>
+  </Waterfall>
   <div class="flex flex-row justify-center">
     <el-pagination layout="sizes, prev, pager, next, total" v-model:current-page="page" v-model:page-size="size"
       :total="total" @change="search" :page-sizes="[10, 20, 50, 100]" />
@@ -34,6 +36,7 @@ import PSongSearchLine from '@/components/ProducerSongSelect.vue';
 import { getProducerId } from '@/utils/vocawiki';
 import Manual from '@/components/Manual.vue';
 import { ElCheckbox, ElCheckboxGroup } from 'element-plus';
+import { Waterfall } from 'vue-waterfall-plugin-next'
 
 const songTypes = [
   "Original",
@@ -47,6 +50,13 @@ const songTypes = [
   "Other",
 ];
 
+const breakpoints = {
+  2048: { rowPerView: 4 },
+  1536: { rowPerView: 3 },
+  1024: { rowPerView: 2 },
+  512: { rowPerView: 1 },
+}
+
 const songs = ref<any>()
 const page = ref<number>()
 const size = ref<number>(10)
@@ -54,6 +64,8 @@ const total = ref<number>(0)
 const entry = ref<string>('海茶')
 const producerId = ref<number>(110656)
 const selectedSongTypes = ref<string[]>(['Original', 'Remix', 'Remaster', 'Cover'])
+const waterfall = ref()
+
 
 async function search() {
   const data1 = await getProducerId(entry.value)
@@ -63,6 +75,8 @@ async function search() {
   });
   songs.value = data2.items
   total.value = data2.totalCount
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  waterfall.value?.renderer()
 }
 
 onMounted(search)
