@@ -13,7 +13,7 @@
   </div>
   <Waterfall :list="songs" :breakpoints="breakpoints" ref="waterfall">
     <template #default="{ item }">
-      <PSongSearchLine :producerId="producerId" :song="item" :key="item.id" />
+      <PSongSearchLine :producerId="producerId" :song="item" :key="item.id" @render="render" />
     </template>
   </Waterfall>
   <div class="flex flex-row justify-center">
@@ -29,10 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import { ElInput, ElText, ElPagination } from 'element-plus';
+import { ElInput, ElText, ElPagination, ElMessage } from 'element-plus';
 import { onMounted, ref, watch } from 'vue';
 import { searchSongsByArtist } from '@/utils/vocadb';
-import PSongSearchLine from '@/components/ProducerSongSelect.vue';
+import PSongSearchLine from '@/components/ProducerSongCard.vue';
 import { getProducerId } from '@/utils/vocawiki';
 import Manual from '@/components/Manual.vue';
 import { ElCheckbox, ElCheckboxGroup } from 'element-plus';
@@ -51,10 +51,14 @@ const songTypes = [
 ];
 
 const breakpoints = {
-  2048: { rowPerView: 4 },
-  1536: { rowPerView: 3 },
-  1024: { rowPerView: 2 },
-  512: { rowPerView: 1 },
+  2500: { rowPerView: 4 },
+  2000: { rowPerView: 3 },
+  1600: { rowPerView: 2 },
+  1300: { rowPerView: 1 },
+  1000: { rowPerView: 4 },
+  700: { rowPerView: 3 },
+  500: { rowPerView: 2 },
+  300: { rowPerView: 1 },
 }
 
 const songs = ref<any>()
@@ -68,6 +72,7 @@ const waterfall = ref()
 
 
 async function search() {
+  ElMessage.info('正在搜索...')
   const data1 = await getProducerId(entry.value)
   producerId.value = data1
   const data2 = await searchSongsByArtist(producerId.value, page.value, size.value, {
@@ -76,6 +81,10 @@ async function search() {
   songs.value = data2.items
   total.value = data2.totalCount
   await new Promise(resolve => setTimeout(resolve, 1000))
+  render()
+}
+
+function render() {
   waterfall.value?.renderer()
 }
 

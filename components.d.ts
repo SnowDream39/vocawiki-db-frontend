@@ -24,7 +24,7 @@ declare module 'vue' {
     Manual: typeof import('./src/components/Manual.vue')['default']
     ProducerCard: typeof import('./src/components/ProducerCard.vue')['default']
     ProducerSearchLine: typeof import('./src/components/ProducerSearchLine.vue')['default']
-    ProducerSongSelect: typeof import('./src/components/ProducerSongSelect.vue')['default']
+    ProducerSongCard: typeof import('./src/components/ProducerSongCard.vue')['default']
     RegisterCard: typeof import('./src/components/user/RegisterCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
