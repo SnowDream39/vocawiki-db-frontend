@@ -2,15 +2,15 @@
   <div
     class="overflow-hidden flex flex-col flex-nowrap rounded-xl drop-shadow-md dark:border-white dark:border-1 hover:drop-shadow-xl transition duration-300 bg-zinc-50 dark:bg-zinc-800"
     ref="card">
-    <div class="w-full aspect-ratio-16/9">
-      <a :href="`https://vocadb.net/S/${song.id}`" target="_blank">
-        <img v-if="pvUrl" :src="pvUrl" referrerpolicy="no-referrer"></img>
-        <div v-else class="w-full h-full bg-gray dark:bg-gray">无可用图片</div>
+    <div class="w-full aspect-ratio-16/9 overflow-hidden flex justify-center items-center">
+      <a class="w-full" :href="`https://vocadb.net/S/${song.id}`" target="_blank">
+        <img v-if="pvUrl" class="w-full" :src="pvUrl" referrerpolicy="no-referrer"></img>
+        <div v-else class="w-full aspect-ratio-16/9 bg-gray dark:bg-gray flex justify-center items-center">无可用图片</div>
       </a>
     </div>
     <div>{{ song.songType }}</div>
     <div class="text-nowrap overflow-hidden">{{ song.defaultName }}</div>
-    <div class="text-nowrap overflow-hidden">{{ song.artistString }}</div>
+    <div>{{ song.artistString }}</div>
     <div class="flex flex-row flex-nowrap justify-between">
       <div class="flex flex-row flex-nowrap items-center space-x-2">
         <a v-for="pv of pvs" :href="pv.url" target="_blank">
@@ -18,7 +18,7 @@
         </a>
       </div>
       <div class="flex justify-center items-center">
-        <el-switch v-model="selected" :loading="loading" @change="change" />
+        <el-switch v-model="selected" :loading="loading" />
       </div>
     </div>
     <div class="w-full flex flex-col flex-nowrap transition-[height] duration-200 ease-in-out"
@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { selectThumbnailFromPvs, validatePv } from '@/utils/vocadb';
 import { addPSong, checkPSong, deletePSong, upsertSongs } from '@/utils/vocawiki';
-import { ElSwitch, ElInput, ElMessage, ElButton, ElForm, ElFormItem } from 'element-plus';
+import { ElSwitch, ElInput, ElMessage, ElButton, ElForm, ElFormItem, tourEmits } from 'element-plus';
 import { onMounted, ref, watch } from 'vue';
 
 const icons = {
@@ -59,10 +59,11 @@ const icons = {
 
 const props = defineProps<{
   song: any,
-  producerId: number
+  producerId: number,
 }>()
 
 const card = ref()
+const selectedFromParent = defineModel<boolean | null>()
 const selected = ref<boolean>(false)
 const loading = ref<boolean>(true)
 const entry = ref<string>("")
@@ -72,6 +73,7 @@ const showDetail = ref<boolean>(false)
 const emit = defineEmits<{
   render: []
 }>()
+let inited = false
 
 const pvs = props.song.pvs.filter(validatePv)
 const pvUrl = selectThumbnailFromPvs(pvs)
@@ -97,8 +99,8 @@ async function upload() {
   loading.value = false
 }
 
-async function change(value: string | boolean | number) {
-  if (value == true) {
+async function change() {
+  if (selected.value == true) {
     await upload()
   } else {
     loading.value = true
@@ -118,7 +120,7 @@ onMounted(async () => {
   const el = card.value as HTMLElement;
 
   el.addEventListener('mouseenter', () => {
-    showDetail.value = true
+    if (selected.value) showDetail.value = true
   });
 
   el.addEventListener('mouseleave', () => {
@@ -128,7 +130,7 @@ onMounted(async () => {
   // 手机点击：点自己就激活，点别的地方就取消
   el.addEventListener('touchstart', (e) => {
     e.stopPropagation(); // 防止冒泡到 document
-    showDetail.value = true
+    if (selected.value) showDetail.value = true
   });
 
   document.addEventListener('touchstart', (e: any) => {
@@ -144,6 +146,16 @@ watch(showDetail, async () => {
   emit("render");
 })
 
+watch(selected, async (value) => {
+  if (inited) change()
+})
+
+watch(selectedFromParent, (value) => {
+  if (typeof value === "boolean") {
+    selected.value = value
+    change()
+  }
+})
 
 </script>
 

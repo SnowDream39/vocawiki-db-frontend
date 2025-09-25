@@ -17,7 +17,7 @@ export async function searchSongsByArtist(id: number, page = 1, size = 10, confi
   const response = await axios.get('https://vocadb.net/api/songs', {
     params: {
       'artistId[]': id,
-      fields: 'MainPicture,PVs',
+      fields: 'MainPicture,PVs,Artists',
       preferAccurateMatches: true,
       start: (page - 1) * size,
       maxResults: size,
