@@ -25,13 +25,13 @@
       :class="{ 'h-0': !showDetail, 'h-32': showDetail }">
       <el-form v-if="selected">
         <el-form-item label="条目">
-          <el-input v-model="entry" placeholder="下划线改为空格" />
+          <el-input v-model="entry" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="description" placeholder="使用wikitext格式" />
+          <el-input v-model="description" />
         </el-form-item>
         <el-form-item label="图片">
-          <el-input v-model="image" placeholder="替换默认图片" />
+          <el-input v-model="image" />
         </el-form-item>
         <el-form-item>
           <div class="w-full flex justify-end">
@@ -94,7 +94,13 @@ async function check() {
 
 async function upload() {
   loading.value = true
-  await addPSong({ producer_id: props.producerId, song_id: props.song.id, entry: entry.value, description: description.value, image: image.value })
+  await addPSong({
+    producer_id: props.producerId,
+    song_id: props.song.id,
+    entry: entry.value.replace(/_/g, " "),
+    description: description.value,
+    image: image.value
+  })
   selected.value = true
   loading.value = false
 }
